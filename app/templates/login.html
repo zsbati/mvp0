@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}  <!-- This is for CSRF protection -->
+
+        <label for="username">Username:</label>
+        {{ form.username(size=32) }}  <!-- Use the form object to render the input -->
+        {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <br>
+
+        <label for="password">Password:</label>
+        {{ form.password(size=32) }}  <!-- Use the form object to render the input -->
+        {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <br>
+
+        <button type="submit">Login</button>
+    </form>
+    <a href="{{ url_for('register') }}">Don't have an account? Register here.</a>
+</body>
+</html>
