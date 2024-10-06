@@ -1,0 +1,36 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>Your role: {{ user.role }}</p>
+    <p><a href="{{ url_for('change_password') }}">Change Password</a></p>
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+
+    {% if user.role == 'superuser' %}
+        <h2>Registered Users</h2>
+        <p><a href="{{ url_for('register') }}">Register New User</a></p>  <!-- Link to register new users -->
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.username }}</td>
+                <td>{{ u.role }}</td>
+                <td>
+                    <a href="{{ url_for('edit_user', user_id=u.id) }}">Edit</a>
+                    <a href="{{ url_for('delete_user', user_id=u.id) }}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
