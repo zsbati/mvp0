@@ -44,10 +44,29 @@ def change_password():
     return render_template('change_password.html', form=form)
 
 
+@app.route('/change_user_password/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def change_user_password(user_id):
+    user = User.query.get_or_404(user_id)
+    if current_user.role != 'superuser':
+        flash('You do not have permission to change user passwords.', 'danger')
+        return redirect(url_for('dashboard'))
+
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        user.password = form.new_password.data  # Update the user's password
+        db.session.commit()
+        flash('Password changed successfully!', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('change_user_password.html', form=form, user=user)
+
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    users = User.query.all()  # Fetch all users
+    return render_template('dashboard.html', user=current_user, users=users)
 
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -1,4 +1,3 @@
-<!-- templates/dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,7 @@
 <body>
     <h1>Welcome, {{ user.username }}!</h1>
     <p>Your role: {{ user.role }}</p>
-    <p><a href="{{ url_for('change_password') }}">Change Password</a></p>
+    <p><a href="{{ url_for('change_password') }}">Change Your Password</a></p>
     <p><a href="{{ url_for('logout') }}">Logout</a></p>
 
     {% if user.role == 'superuser' %}
@@ -26,7 +25,10 @@
                 <td>{{ u.role }}</td>
                 <td>
                     <a href="{{ url_for('edit_user', user_id=u.id) }}">Edit</a>
-                    <a href="{{ url_for('delete_user', user_id=u.id) }}">Delete</a>
+                    <a href="{{ url_for('change_user_password', user_id=u.id) }}">Change Password</a>
+                    <form action="{{ url_for('delete_user', user_id=u.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
